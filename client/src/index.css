@@ -1,0 +1,125 @@
+:root,
+[data-theme="dark"] {
+  --bg: #0f1419;
+  --surface: #1a2332;
+  --surface-hover: #243044;
+  --border: #2d3a4d;
+  --text: #e8ecf1;
+  --text-muted: #8b9cb8;
+  --accent: #14b8a6;
+  --accent-hover: #0d9488;
+  --accent-soft: rgba(20, 184, 166, 0.15);
+  --error: #f87171;
+  --error-soft: rgba(248, 113, 113, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-sans: 'Outfit', 'DM Sans', system-ui, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --accent-soft: rgba(13, 148, 136, 0.12);
+  --error: #dc2626;
+  --error-soft: rgba(220, 38, 38, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input, button {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* react-datepicker: dark theme (DD/MM/YYYY used on Metrics & Blog) */
+.react-datepicker-popper {
+  z-index: 100;
+}
+
+.react-datepicker {
+  font-family: var(--font-sans);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.react-datepicker__header {
+  background: var(--surface-hover);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: var(--text);
+}
+
+.react-datepicker__day {
+  color: var(--text);
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__day--keyboard-selected {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--today {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.react-datepicker__day--disabled {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: var(--text-muted);
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
