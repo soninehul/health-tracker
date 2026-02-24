@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
 import './Dashboard.css';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <div className="dashboard">

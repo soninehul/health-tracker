@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/authSlice';
+import { setTheme } from '../store/themeSlice';
 import './Layout.css';
 
 export default function Layout() {
-  const { user, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const theme = useSelector((state) => state.theme.theme);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAuthPage = pathname === '/login' || pathname === '/register';
@@ -26,7 +28,7 @@ export default function Layout() {
 
   const handleLogout = () => {
     setDropdownOpen(false);
-    logout();
+    dispatch(logout());
     navigate('/login');
   };
 
@@ -64,7 +66,10 @@ export default function Layout() {
                       role="menuitemradio"
                       aria-checked={theme === 'light'}
                       className="nav-user-dropdown-item"
-                      onClick={() => { setTheme('light'); setDropdownOpen(false); }}
+                      onClick={() => {
+                        dispatch(setTheme('light'));
+                        setDropdownOpen(false);
+                      }}
                     >
                       <span className="nav-user-dropdown-check">{theme === 'light' ? '✓' : ''}</span>
                       Light
@@ -74,7 +79,10 @@ export default function Layout() {
                       role="menuitemradio"
                       aria-checked={theme === 'dark'}
                       className="nav-user-dropdown-item"
-                      onClick={() => { setTheme('dark'); setDropdownOpen(false); }}
+                      onClick={() => {
+                        dispatch(setTheme('dark'));
+                        setDropdownOpen(false);
+                      }}
                     >
                       <span className="nav-user-dropdown-check">{theme === 'dark' ? '✓' : ''}</span>
                       Dark

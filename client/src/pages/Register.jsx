@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../store/authSlice';
 import './Auth.css';
 
 export default function Register() {
@@ -10,7 +11,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const { register } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,10 +27,14 @@ export default function Register() {
     }
     setSubmitting(true);
     try {
-      await register(name, email, password);
+      await dispatch(registerUser({ name, email, password })).unwrap();
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      const message =
+        typeof err === 'string'
+          ? err
+          : err.response?.data?.message || err.message || 'Registration failed. Please try again.';
+      setError(message);
     } finally {
       setSubmitting(false);
     }

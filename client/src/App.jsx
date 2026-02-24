@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -7,9 +8,11 @@ import Dashboard from './pages/Dashboard';
 import Metrics from './pages/Metrics';
 import History from './pages/History';
 import Blog from './pages/Blog';
+import { initializeAuth } from './store/authSlice';
+import { STORAGE_KEY } from './store/themeSlice';
 
 function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { user, loading } = useSelector((state) => state.auth);
   if (loading) {
     return (
       <div className="loading-screen">
@@ -23,7 +26,7 @@ function ProtectedRoute({ children }) {
 }
 
 function PublicOnlyRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { user, loading } = useSelector((state) => state.auth);
   if (loading) {
     return (
       <div className="loading-screen">
@@ -36,6 +39,18 @@ function PublicOnlyRoute({ children }) {
 }
 
 export default function App() {
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme.theme);
+
+  useEffect(() => {
+    dispatch(initializeAuth());
+  }, [dispatch]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(STORAGE_KEY, theme);
+  }, [theme]);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
