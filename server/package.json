@@ -1,12 +1,11 @@
 {
   "name": "health-tracker-server",
   "version": "1.0.0",
-  "description": "MERN health tracking API",
+  "description": "MERN health tracker app",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "seed": "node scripts/seedUsers.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
