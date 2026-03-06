@@ -32,17 +32,18 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required.' });
+    const { username, email, password } = req.body;
+    const loginIdentifier = (username || email || '').trim().toLowerCase();
+    if (!loginIdentifier || !password) {
+      return res.status(400).json({ message: 'Username and password are required.' });
     }
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email: loginIdentifier }).select('+password');
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password.' });
+      return res.status(401).json({ message: 'username not there' });
     }
     const match = await user.comparePassword(password);
     if (!match) {
-      return res.status(401).json({ message: 'Invalid email or password.' });
+      return res.status(401).json({ message: 'wrong password' });
     }
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     res.json({

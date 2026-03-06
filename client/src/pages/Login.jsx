@@ -5,7 +5,7 @@ import { loginUser } from '../store/authSlice';
 import './Auth.css';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -16,16 +16,15 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setSubmitting(true);
-    try {
-      await dispatch(loginUser({ email, password })).unwrap();
+    const resultAction = await dispatch(loginUser({ username, password }));
+
+    if (loginUser.fulfilled.match(resultAction)) {
       navigate('/dashboard');
-    } catch (err) {
-      const message =
-        typeof err === 'string' ? err : err.response?.data?.message || err.message || 'Login failed. Please try again.';
-      setError(message);
-    } finally {
-      setSubmitting(false);
+    } else {
+      const message = resultAction.payload || resultAction.error?.message || 'Login failed. Please try again.';
+      setError(String(message));
     }
+    setSubmitting(false);
   };
 
   return (
@@ -38,14 +37,14 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error">{error}</div>}
           <label>
-            Email
+            Username
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter username"
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </label>
           <label>
