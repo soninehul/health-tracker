@@ -39,11 +39,11 @@ router.post('/login', async (req, res) => {
     }
     const user = await User.findOne({ email: loginIdentifier }).select('+password');
     if (!user) {
-      return res.status(401).json({ message: 'username not there' });
+      return res.status(401).json({ message: 'Username not found!' });
     }
     const match = await user.comparePassword(password);
     if (!match) {
-      return res.status(401).json({ message: 'wrong password' });
+      return res.status(401).json({ message: 'Wrong password!' });
     }
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     res.json({
